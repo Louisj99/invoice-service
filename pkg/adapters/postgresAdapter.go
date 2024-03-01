@@ -24,7 +24,7 @@ func NewPostgresAdapter(connStr string) (*PostgresAdapter, error) {
 	return &PostgresAdapter{DB: db}, nil
 }
 
-func (p *PostgresAdapter) PlaceholderAdapter(ctx context.Context, placeholder string) error {
+func (p *PostgresAdapter) Placeholder(ctx context.Context, placeholder string) error {
 	//TODO implement me
 	panic("implement me")
 }
