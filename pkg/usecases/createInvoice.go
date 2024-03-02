@@ -1,5 +1,10 @@
 package usecases
 
+import (
+	"github.com/gin-gonic/gin"
+	"invoice-service/pkg/entities"
+)
+
 type createInvoiceRequest struct {
 	OrderID       string
 	PaymentAmount float64
@@ -19,7 +24,21 @@ type EmailSender interface {
 }
 
 type CreateInvoiceInterfacePostgres interface {
-	GetOrder(orderID string) (Order, error)
-	GetEmployee(employeeID string) (Employee, error)
-	CreateInvoice(orderID string, paymentAmount float64, customerEmail string, employeeID string) error
+	GetOrder(orderID string) (entities.Order, error)
+	GetEmployee(employeeID string) (entities.Employee, error)
+	CreateInvoice(invoice entities.Invoice) ([]byte, error)
+}
+
+func CreateInvoice(CreateInvoiceInterface CreateInvoiceInterface, CreateInvoiceInterfacePostgres CreateInvoiceInterfacePostgres) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var request createInvoiceRequest
+		var response createInvoiceResponse
+		err := c.BindJSON(&request)
+		if err != nil {
+			c.JSON(400, "error bad request")
+			return
+		}
+
+		c.JSON(200, response)
+	}
 }
